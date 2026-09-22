@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSignal | Quick Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">SafeSignal</div>
+
+    <div class="nav-links">
+        <a class="active" href="/">Quick Report</a>
+        <a href="/map">Pattern Map</a>
+        <a href="/explain">Why Flagged</a>
+        <a href="/alert">Alerts</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <h1>Small Signals.<br>Early Warnings.</h1>
+    <p class="tagline">Anonymous by design. A tap, not a form.</p>
+
+    <section class="card report-card">
+
+        <h2>Report a Safety Signal</h2>
+        <p class="muted">Help identify recurring safety patterns in your area.</p>
+
+        {% if message %}
+            <div class="success-message">{{ message }}</div>
+        {% endif %}
+
+        <form method="POST">
+
+            <input type="hidden" name="reporter_id" value="{{ reporter_id }}">
+
+            <label for="incident_type">What happened?</label>
+
+            <select id="incident_type" name="incident_type" required>
+                <option value="Catcalling">Catcalling</option>
+                <option value="Loitering">Loitering</option>
+                <option value="Following">Following</option>
+                <option value="Verbal Harassment">Verbal Harassment</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="location">Where did it happen?</label>
+
+            <input
+                id="location"
+                name="location"
+                type="text"
+                placeholder="Enter location"
+                required
+            >
+
+            <button type="button" class="secondary-btn" onclick="useLocation()">
+                📍 Use Current Location
+            </button>
+
+            <label for="incident_time">When did it happen?</label>
+
+            <select id="incident_time" name="incident_time" required>
+                <option value="Just now">Just now</option>
+                <option value="Today">Today</option>
+                <option value="Earlier today">Earlier today</option>
+                <option value="Yesterday">Yesterday</option>
+            </select>
+
+            <a
+                class="secondary-btn change-btn"
+                href="{{ url_for('change_reporter', current=reporter_id) }}"
+            >
+                Change Demo Reporter
+            </a>
+
+            <button type="submit" class="submit-btn">
+                Submit Signal →
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+<script>
+function useLocation() {
+    const field = document.getElementById("location");
+
+    if (!navigator.geolocation) {
+        field.value = "central corridor";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            field.value =
+                position.coords.latitude.toFixed(4) +
+                ", " +
+                position.coords.longitude.toFixed(4);
+        },
+        function() {
+            field.value = "central corridor";
+        }
+    );
+}
+</script>
+
+</body>
+</html>

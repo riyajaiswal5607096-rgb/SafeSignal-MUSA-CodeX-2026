@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SafeSignal | Pattern Map</title>
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">SafeSignal</div>
+
+    <div class="nav-links">
+        <a href="/">Quick Report</a>
+        <a class="active" href="/map">Pattern Map</a>
+        <a href="/explain">Why Flagged</a>
+        <a href="/alert">Alerts</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <h1>Pattern Map</h1>
+    <p class="tagline">Connecting scattered safety signals into emerging patterns.</p>
+
+    <section class="map-card">
+
+        <div id="map"></div>
+
+        <div class="map-caption">
+            Prototype Demonstration • Synthetic Data
+        </div>
+
+    </section>
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-number">{{ total_reports }}</div>
+            <div class="stat-label">Total Signals</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{ unique_reporters }}</div>
+            <div class="stat-label">Distinct Reporters</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{ incident_types }}</div>
+            <div class="stat-label">Incident Types</div>
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Detected Signals</h2>
+
+        {% for report in reports %}
+
+        <div class="signal-item">
+
+            <strong>{{ report[0] }}</strong>
+
+            <div>📍 {{ report[1] }}</div>
+            <div>◷ {{ report[2] }}</div>
+            <div>Anonymous reporter</div>
+
+        </div>
+
+        {% endfor %}
+
+        <a class="primary-link" href="/explain">
+            Why Was This Pattern Flagged? →
+        </a>
+
+    </section>
+
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const map = L.map("map").setView([19.0760, 72.8777], 11);
+
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }
+).addTo(map);
+
+const marker = L.marker([19.0760, 72.8777]).addTo(map);
+
+marker.bindPopup(`
+    <div class="popup-content">
+        <strong>⚠ Rising Safety Pattern</strong>
+        <p>Central Corridor</p>
+        <p>4 signals · 4 reporters · 4 incident types</p>
+        <small>Prototype demonstration</small>
+    </div>
+`).openPopup();
+</script>
+
+</body>
+</html>

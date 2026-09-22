@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SafeSignal | Why Flagged</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">SafeSignal</div>
+
+    <div class="nav-links">
+        <a href="/">Quick Report</a>
+        <a href="/map">Pattern Map</a>
+        <a class="active" href="/explain">Why Flagged</a>
+        <a href="/alert">Alerts</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <h1>Why This Pattern Was Flagged</h1>
+    <p class="tagline">SafeSignal does not rely on report volume alone.</p>
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-number">{{ reports|length }}</div>
+            <div class="stat-label">Total Signals</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{ unique_reporters }}</div>
+            <div class="stat-label">Distinct Reporters</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-number">{{ incident_types }}</div>
+            <div class="stat-label">Incident Types</div>
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Pattern Evidence</h2>
+
+        <p>
+            The system detected repeated safety signals from multiple
+            independent anonymous reporters in the same concentrated location.
+        </p>
+
+        <p>
+            The signals also contain multiple incident types, indicating that
+            the pattern is not based only on repeated identical reports.
+        </p>
+
+    </section>
+
+    <section class="card">
+
+        <h2 class="warning-title">⚠ Credible Rising Pattern</h2>
+
+        <p>
+            Multiple distinct reporters have reported related safety signals
+            in the same location.
+        </p>
+
+        <p>
+            <strong>Prototype credibility rule:</strong>
+            minimum 3 signals, 3 distinct reporters, and concentrated location.
+        </p>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Why This Matters</h2>
+
+        <p>
+            A single signal may be dismissed or overlooked. SafeSignal connects
+            multiple signals to reveal a potentially rising safety pattern
+            before escalation.
+        </p>
+
+    </section>
+
+    <a class="primary-link" href="/alert">
+        View Authority Alert →
+    </a>
+
+</main>
+
+</body>
+</html>
