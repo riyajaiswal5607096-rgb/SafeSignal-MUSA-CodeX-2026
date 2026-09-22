@@ -1,1062 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SafeSignal — Small Signals. Early Warnings.</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f7f9fb;
-            color: #17212b;
-        }
-
-        /* ---------- NAVBAR ---------- */
-
-        nav {
-            background: #ffffff;
-            border-bottom: 1px solid #e4e8ec;
-            padding: 16px 7%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: 700;
-            color: #123047;
-        }
-
-        .logo span {
-            color: #16a99b;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 22px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #44515c;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .nav-links a:hover {
-            color: #16a99b;
-        }
-
-        /* ---------- HERO ---------- */
-
-        .hero {
-            background: linear-gradient(135deg, #071a2b, #0d2638);
-            color: white;
-            padding: 75px 7% 65px;
-        }
-
-        .hero-content {
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        .tag {
-            display: inline-block;
-            background: rgba(32, 214, 199, 0.12);
-            color: #20d6c7;
-            border: 1px solid rgba(32, 214, 199, 0.35);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            line-height: 1.08;
-            margin: 0 0 18px;
-            max-width: 750px;
-        }
-
-        .hero h1 span {
-            color: #20d6c7;
-        }
-
-        .hero p {
-            font-size: 18px;
-            line-height: 1.7;
-            color: #cbd8df;
-            max-width: 720px;
-        }
-
-        .hero-buttons {
-            margin-top: 30px;
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 13px 21px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary {
-            background: #20d6c7;
-            color: #06202c;
-        }
-
-        .btn-secondary {
-            border: 1px solid #557080;
-            color: white;
-            background: transparent;
-        }
-
-        /* ---------- MAIN ---------- */
-
-        main {
-            max-width: 1100px;
-            margin: auto;
-            padding: 55px 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .section-title h2 {
-            font-size: 30px;
-            margin-bottom: 8px;
-            color: #123047;
-        }
-
-        .section-title p {
-            color: #697783;
-            margin: 0;
-        }
-
-        /* ---------- QUICK REPORT ---------- */
-
-        .report-card {
-            background: white;
-            border: 1px solid #e1e7eb;
-            border-radius: 14px;
-            padding: 28px;
-            box-shadow: 0 7px 25px rgba(0,0,0,0.05);
-            max-width: 700px;
-            margin: auto;
-        }
-
-        .report-card h3 {
-            margin-top: 0;
-            color: #123047;
-        }
-
-        .report-card label {
-            display: block;
-            margin: 17px 0 7px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #374854;
-        }
-
-        .report-card select,
-        .report-card input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccd5dc;
-            border-radius: 7px;
-            font-size: 14px;
-            background: white;
-        }
-
-        .submit-btn {
-            width: 100%;
-            margin-top: 22px;
-            padding: 13px;
-            border: none;
-            border-radius: 8px;
-            background: #123047;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .submit-btn:hover {
-            background: #0d2638;
-        }
-
-        .success-message {
-            background: #e5f8f5;
-            border: 1px solid #9ce4db;
-            color: #08796e;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .demo-reporter {
-            margin-top: 14px;
-            text-align: center;
-        }
-
-        .demo-reporter button {
-            border: none;
-            background: transparent;
-            color: #128f84;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        /* ---------- FLOW ---------- */
-
-        .flow {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-top: 25px;
-        }
-
-        .flow-item {
-            background: white;
-            border: 1px solid #e0e6ea;
-            border-radius: 10px;
-            padding: 17px 8px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .flow-item.active {
-            border-color: #20d6c7;
-            background: #effcfb;
-            color: #08796e;
-        }
-
-        /* ---------- MAP ---------- */
-
-        .map-section {
-            margin-top: 70px;
-        }
-
-        .map-box {
-            height: 360px;
-            border-radius: 14px;
-            background:
-                linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)),
-                repeating-linear-gradient(
-                    45deg,
-                    #dce7e5,
-                    #dce7e5 10px,
-                    #e9f0ef 10px,
-                    #e9f0ef 20px
-                );
-            border: 1px solid #d6dfe3;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .road {
-            position: absolute;
-            background: #ffffff;
-            transform: rotate(-25deg);
-            opacity: .9;
-        }
-
-        .road.one {
-            width: 120%;
-            height: 30px;
-            top: 45%;
-            left: -10%;
-        }
-
-        .road.two {
-            width: 100%;
-            height: 25px;
-            top: 60%;
-            left: 10%;
-            transform: rotate(30deg);
-        }
-
-        .marker {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            border-radius: 50% 50% 50% 0;
-            background: #e34b4b;
-            transform: rotate(-45deg);
-            box-shadow: 0 4px 12px rgba(0,0,0,.25);
-        }
-
-        .marker::after {
-            content: "";
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            top: 7px;
-            left: 7px;
-        }
-
-        .marker.m1 {
-            left: 47%;
-            top: 38%;
-        }
-
-        .marker.m2 {
-            left: 53%;
-            top: 45%;
-        }
-
-        .marker.m3 {
-            left: 49%;
-            top: 52%;
-        }
-
-        .popup {
-            position: absolute;
-            left: 54%;
-            top: 20%;
-            background: white;
-            padding: 15px 17px;
-            border-radius: 9px;
-            box-shadow: 0 5px 22px rgba(0,0,0,.18);
-            width: 245px;
-            font-size: 13px;
-        }
-
-        .popup strong {
-            color: #d33f3f;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .popup p {
-            margin: 5px 0;
-            color: #4d5c67;
-        }
-
-        .popup small {
-            color: #8a969e;
-        }
-
-        /* ---------- DASHBOARD ---------- */
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat {
-            background: white;
-            border: 1px solid #e0e6ea;
-            border-radius: 12px;
-            padding: 22px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 31px;
-            font-weight: 800;
-            color: #123047;
-        }
-
-        .stat-label {
-            color: #71808b;
-            font-size: 13px;
-            margin-top: 6px;
-        }
-
-        /* ---------- EXPLAIN ---------- */
-
-        .explain-card {
-            margin-top: 50px;
-            background: white;
-            border: 1px solid #e0e6ea;
-            border-radius: 14px;
-            padding: 28px;
-        }
-
-        .reason {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            margin: 18px 0;
-        }
-
-        .reason-icon {
-            min-width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: #e7faf7;
-            color: #0c8e82;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .reason h4 {
-            margin: 0 0 4px;
-            color: #19384b;
-        }
-
-        .reason p {
-            margin: 0;
-            color: #687781;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* ---------- ALERT ---------- */
-
-        .alert-card {
-            margin-top: 25px;
-            background: #fff9f0;
-            border: 1px solid #f1d6a6;
-            border-radius: 14px;
-            padding: 25px;
-        }
-
-        .alert-card h3 {
-            color: #9a5d00;
-            margin-top: 0;
-        }
-
-        .alert-status {
-            display: inline-block;
-            background: #ffe5b5;
-            color: #8c5600;
-            padding: 7px 11px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .alert-card p {
-            color: #6f5c40;
-            line-height: 1.6;
-        }
-
-        /* ---------- DISCLOSURE ---------- */
-
-        .notice {
-            margin-top: 45px;
-            padding: 20px;
-            background: #eef5f8;
-            border-left: 4px solid #20d6c7;
-            border-radius: 7px;
-            color: #52636e;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        /* ---------- FOOTER ---------- */
-
-        footer {
-            background: #071a2b;
-            color: #b9c9d2;
-            text-align: center;
-            padding: 28px 20px;
-            font-size: 13px;
-        }
-
-        footer strong {
-            color: white;
-        }
-
-        /* ---------- MOBILE ---------- */
-
-        @media (max-width: 800px) {
-
-            .hero h1 {
-                font-size: 37px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .flow {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .popup {
-                left: 35%;
-                width: 220px;
-            }
-        }
-
-        @media (max-width: 500px) {
-
-            .hero {
-                padding: 55px 6%;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            main {
-                padding: 40px 15px;
-            }
-
-            .popup {
-                left: 12%;
-                top: 12%;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeSignal | Quick Report</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#061a2b;color:#f4f7fa;font-family:Arial,Helvetica,sans-serif}
+.navbar{height:78px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:#082238;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{color:#20d6c7;font-size:25px;font-weight:800}
+.nav-links{display:flex;gap:30px}
+.nav-links a{color:#aebdcc;text-decoration:none;font-size:15px}
+.nav-links a:hover,.nav-links a.active{color:#20d6c7}
+.container{width:90%;max-width:1160px;margin:0 auto;padding:42px 0 80px}
+h1{font-size:39px;line-height:1.05;margin:0 0 10px;letter-spacing:-1px}
+h2{margin-top:0;font-size:25px}
+.tagline,.muted{color:#9dafbf;font-size:16px}
+.card,.map-card{margin-top:30px;background:#0c2940;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:24px;box-shadow:0 12px 35px rgba(0,0,0,.12)}
+.report-card{min-height:430px}
+form{max-width:580px}
+label{display:block;margin-top:24px;margin-bottom:9px;color:#dfe8ef;font-weight:700}
+select,input{width:100%;height:43px;border-radius:7px;border:1px solid #38516a;background:#071d31;color:#f2f7fa;padding:0 13px;font-size:14px}
+input:focus,select:focus{outline:1px solid #20d6c7}
+.secondary-btn,.submit-btn,.primary-link{display:inline-block;margin-top:18px;border:0;border-radius:7px;padding:12px 18px;background:#20d6c7;color:#06202e;font-weight:800;text-decoration:none;cursor:pointer}
+.change-btn{margin-right:10px}
+.submit-btn{display:block;margin-top:14px}
+.success-message{color:#20d6c7;font-weight:800;margin-top:4px}
+.map-card{padding:0;overflow:hidden}
+#map{width:100%;height:345px}
+.map-caption{text-align:center;color:#aebdcc;padding:10px;font-size:13px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.stat-card{background:#061c2f;border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:21px}
+.stat-number{color:#20d6c7;font-size:32px;font-weight:800}
+.stat-label{margin-top:3px;font-size:15px}
+.signal-item{background:#061a2c;border-left:3px solid #20d6c7;border-radius:7px;padding:14px;margin:12px 0;line-height:1.55}
+.primary-link{margin-top:18px}
+.warning-title,.alert-box h2{color:#ffb83f}
+.alert-box{margin-top:28px;padding:27px;border:1px solid #d9a52e;border-radius:12px;background:rgba(31,37,46,.7)}
+.summary-row{margin:15px 0}
+.popup-content{color:#222;min-width:220px;line-height:1.5}
+.popup-content strong{display:block;margin-bottom:8px}
+@media(max-width:800px){.navbar{height:auto;padding:18px 5%;align-items:flex-start;gap:18px;flex-direction:column}.nav-links{gap:16px;flex-wrap:wrap}h1{font-size:31px}.stats-grid{grid-template-columns:1fr}#map{height:300px}}
+</style>
 </head>
-
 <body>
-
-<!-- ================= NAVBAR ================= -->
-
-<nav>
-    <div class="logo">
-        Safe<span>Signal</span>
-    </div>
-
-    <div class="nav-links">
-        <a href="#report">Quick Report</a>
-        <a href="#map-section">Pattern Map</a>
-        <a href="#explain">Why Flagged</a>
-        <a href="#alert">Authority Alert</a>
-    </div>
+<nav class="navbar">
+<div class="logo">SafeSignal</div>
+<div class="nav-links">
+<a class="active" href="#report">Quick Report</a>
+<a href="#map">Pattern Map</a>
+<a href="#explain">Why Flagged</a>
+<a href="#alert">Alerts</a>
+</div>
 </nav>
 
+<main class="container">
+<h1>Small Signals.<br>Early Warnings.</h1>
+<p class="tagline">Anonymous by design. A tap, not a form.</p>
 
-<!-- ================= HERO ================= -->
-
-<section class="hero">
-
-    <div class="hero-content">
-
-        <div class="tag">
-            MUSA CodeX 2026 · CX1001
-        </div>
-
-        <h1>
-            Small Signals.<br>
-            <span>Early Warnings.</span><br>
-            Safer Spaces.
-        </h1>
-
-        <p>
-            SafeSignal is a low-friction safety signal platform that helps
-            connect scattered minor incidents into emerging patterns for
-            human review before escalation.
-        </p>
-
-        <div class="hero-buttons">
-
-            <a href="#report" class="btn btn-primary">
-                Report a Signal
-            </a>
-
-            <a href="#map-section" class="btn btn-secondary">
-                View Pattern Map
-            </a>
-
-        </div>
-
-    </div>
-
+<section id="report" class="card report-card">
+<h2>Report a Safety Signal</h2>
+<p class="muted">Help identify recurring safety patterns in your area.</p>
+<div id="message"></div>
+<form onsubmit="submitSignal(event)">
+<label>What happened?</label>
+<select id="incident" required>
+<option>Catcalling</option><option>Loitering</option><option>Following</option><option>Verbal Harassment</option><option>Other</option>
+</select>
+<label>Where did it happen?</label>
+<input id="location" type="text" placeholder="Enter location" required>
+<button type="button" class="secondary-btn" onclick="useLocation()">📍 Use Current Location</button>
+<label>When did it happen?</label>
+<select id="time" required>
+<option>Just now</option><option>Today</option><option>Earlier today</option><option>Yesterday</option>
+</select>
+<button type="button" class="secondary-btn change-btn" onclick="changeReporter()">Change Demo Reporter</button>
+<button type="submit" class="submit-btn">Submit Signal →</button>
+</form>
+<p id="reporter" class="muted" style="font-size:13px">Demo Reporter: Reporter 1</p>
 </section>
 
-
-<!-- ================= MAIN ================= -->
-
-<main>
-
-
-    <!-- QUICK REPORT -->
-
-    <section id="report">
-
-        <div class="section-title">
-
-            <h2>Quick Report</h2>
-
-            <p>
-                A tap, not a form.
-            </p>
-
-        </div>
-
-
-        <div class="report-card">
-
-            <div id="successMessage" class="success-message"
-                 style="display:none;">
-                Signal submitted successfully!
-            </div>
-
-
-            <h3>Report a Safety Signal</h3>
-
-            <p style="color:#71808b;font-size:14px;">
-                Submit a minor safety incident anonymously.
-            </p>
-
-
-            <label for="incident">
-                Incident Type
-            </label>
-
-            <select id="incident">
-
-                <option>Catcalling</option>
-                <option>Loitering</option>
-                <option>Following</option>
-                <option>Verbal Harassment</option>
-                <option>Uncomfortable Encounter</option>
-                <option>Other</option>
-
-            </select>
-
-
-            <label for="location">
-                Location
-            </label>
-
-            <input
-                id="location"
-                type="text"
-                placeholder="Example: Central Corridor"
-            >
-
-
-            <label for="time">
-                When did it occur?
-            </label>
-
-            <input
-                id="time"
-                type="datetime-local"
-            >
-
-
-            <button
-                class="submit-btn"
-                onclick="submitSignal()"
-            >
-                Submit Signal
-            </button>
-
-
-            <div class="demo-reporter">
-
-                <button onclick="changeReporter()">
-                    Change Demo Reporter
-                </button>
-
-            </div>
-
-            <p
-                id="reporterText"
-                style="
-                text-align:center;
-                color:#84919a;
-                font-size:12px;
-                margin-bottom:0;
-                "
-            >
-                Demo Reporter: Reporter 1
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- FLOW -->
-
-    <section>
-
-        <div class="section-title" style="margin-top:65px;">
-
-            <h2>SafeSignal Flow</h2>
-
-        </div>
-
-        <div class="flow">
-
-            <div class="flow-item active">
-                REPORT
-            </div>
-
-            <div class="flow-item">
-                CAPTURE
-            </div>
-
-            <div class="flow-item">
-                CONNECT
-            </div>
-
-            <div class="flow-item">
-                DETECT
-            </div>
-
-            <div class="flow-item">
-                EXPLAIN
-            </div>
-
-            <div class="flow-item">
-                ALERT
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PATTERN MAP -->
-
-    <section id="map-section" class="map-section">
-
-        <div class="section-title">
-
-            <h2>Pattern Map</h2>
-
-            <p>
-                Multiple signals can reveal an emerging pattern.
-            </p>
-
-        </div>
-
-
-        <div class="map-box">
-
-            <div class="road one"></div>
-            <div class="road two"></div>
-
-            <div class="marker m1"></div>
-            <div class="marker m2"></div>
-            <div class="marker m3"></div>
-
-
-            <div class="popup">
-
-                <strong>
-                    ⚠ Rising Safety Pattern
-                </strong>
-
-                <p>
-                    <b>Central Corridor</b>
-                </p>
-
-                <p>
-                    4 signals · 4 reporters · 4 incident types
-                </p>
-
-                <small>
-                    Prototype demonstration
-                </small>
-
-            </div>
-
-        </div>
-
-
-        <!-- DASHBOARD -->
-
-        <div class="stats">
-
-            <div class="stat">
-
-                <div class="stat-number">
-                    6
-                </div>
-
-                <div class="stat-label">
-                    Total Signals
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-number">
-                    4
-                </div>
-
-                <div class="stat-label">
-                    Distinct Reporters
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-number">
-                    5
-                </div>
-
-                <div class="stat-label">
-                    Incident Types
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- WHY FLAGGED -->
-
-    <section id="explain">
-
-        <div class="explain-card">
-
-            <div class="section-title" style="text-align:left;margin-bottom:25px;">
-
-                <h2>
-                    Why Flagged?
-                </h2>
-
-                <p>
-                    SafeSignal explains the evidence behind an alert.
-                </p>
-
-            </div>
-
-
-            <div class="reason">
-
-                <div class="reason-icon">
-                    ✓
-                </div>
-
-                <div>
-
-                    <h4>
-                        Reporter diversity
-                    </h4>
-
-                    <p>
-                        Multiple independent anonymous reporters contributed
-                        signals to the emerging pattern.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="reason">
-
-                <div class="reason-icon">
-                    ✓
-                </div>
-
-                <div>
-
-                    <h4>
-                        Location recurrence
-                    </h4>
-
-                    <p>
-                        Signals are concentrated around the same demonstration
-                        location.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="reason">
-
-                <div class="reason-icon">
-                    ✓
-                </div>
-
-                <div>
-
-                    <h4>
-                        Incident diversity
-                    </h4>
-
-                    <p>
-                        Different incident types contribute to the overall
-                        pattern instead of relying on one repeated report.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- AUTHORITY ALERT -->
-
-    <section id="alert">
-
-        <div class="section-title" style="margin-top:60px;">
-
-            <h2>
-                Authority Alert
-            </h2>
-
-            <p>
-                Early warning for human review.
-            </p>
-
-        </div>
-
-
-        <div class="alert-card">
-
-            <span class="alert-status">
-                EARLY-WARNING SIGNAL
-            </span>
-
-            <h3>
-                Rising Safety Pattern Detected
-            </h3>
-
-            <p>
-                Central Corridor shows a concentration of safety signals
-                involving multiple reporters and incident types.
-            </p>
-
-            <p>
-                This alert is intended to support human review and does not
-                automatically identify a person, predict a crime, or declare
-                an area dangerous.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- DISCLOSURE -->
-
-    <div class="notice">
-
-        <strong>Prototype demonstration:</strong>
-        This GitHub Pages version is a static demonstration of the
-        SafeSignal interface. The demonstration pattern and dashboard
-        figures use synthetic data. The full Flask MVP with database-backed
-        functionality is deployed separately.
-
-    </div>
-
-
+<section id="map" class="map-card">
+<div style="padding:24px 24px 10px"><h2>Pattern Map</h2><p class="muted">Connecting scattered safety signals into emerging patterns.</p></div>
+<div style="height:345px;background:#dce7e5;position:relative;overflow:hidden">
+<div style="position:absolute;width:130%;height:32px;background:#fff;top:45%;left:-15%;transform:rotate(-20deg)"></div>
+<div style="position:absolute;width:120%;height:26px;background:#fff;top:60%;left:-5%;transform:rotate(25deg)"></div>
+<div style="position:absolute;left:48%;top:43%;width:20px;height:20px;background:#e34b4b;border-radius:50%;box-shadow:0 0 0 8px rgba(227,75,75,.18)"></div>
+<div style="position:absolute;left:54%;top:51%;width:20px;height:20px;background:#e34b4b;border-radius:50%;box-shadow:0 0 0 8px rgba(227,75,75,.18)"></div>
+<div style="position:absolute;left:42%;top:55%;width:20px;height:20px;background:#e34b4b;border-radius:50%;box-shadow:0 0 0 8px rgba(227,75,75,.18)"></div>
+<div style="position:absolute;left:52%;top:20%;background:#fff;padding:15px;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.2);color:#222;width:245px">
+<strong style="color:#d33f3f">⚠ Rising Safety Pattern</strong>
+<p>Central Corridor</p><p>4 signals · 4 reporters · 4 incident types</p><small>Prototype demonstration</small>
+</div>
+</div>
+<div class="map-caption">Prototype Demonstration • Synthetic Data</div>
+</section>
+
+<section class="stats-grid">
+<div class="stat-card"><div class="stat-number">6</div><div class="stat-label">Total Signals</div></div>
+<div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Distinct Reporters</div></div>
+<div class="stat-card"><div class="stat-number">5</div><div class="stat-label">Incident Types</div></div>
+</section>
+
+<section id="explain" class="card">
+<h2>Why This Pattern Was Flagged</h2>
+<p class="muted">SafeSignal does not rely on report volume alone.</p>
+<div class="signal-item"><strong>✓ Reporter diversity</strong><br>Multiple independent anonymous reporters contributed signals.</div>
+<div class="signal-item"><strong>✓ Location recurrence</strong><br>Signals are concentrated around the same location.</div>
+<div class="signal-item"><strong>✓ Incident diversity</strong><br>Multiple incident types contribute to the pattern.</div>
+</section>
+
+<section id="alert" class="alert-box">
+<h2>⚠ Rising Safety Pattern Detected</h2>
+<p>SafeSignal identified a recurring pattern of minor safety incidents requiring human review.</p>
+<div class="card" style="margin-top:18px">
+<div class="summary-row"><strong>📍 Location:</strong> Central Corridor</div>
+<div class="summary-row"><strong>Pattern:</strong> Repeated minor safety incidents</div>
+<div class="summary-row"><strong>Signals:</strong> 4 anonymous reports</div>
+<div class="summary-row"><strong>Independent reporters:</strong> 4</div>
+<div class="summary-row"><strong>Incident diversity:</strong> 4 incident types</div>
+<div class="summary-row"><strong>Status:</strong> Requires human review</div>
+</div>
+</section>
+
+<div class="card" style="color:#9dafbf;font-size:13px">
+<strong style="color:#20d6c7">Prototype Demonstration:</strong>
+This GitHub Pages version is a static demonstration. Pattern figures use synthetic data. The full database-backed Flask MVP remains deployed on Render.
+</div>
 </main>
 
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <strong>SafeSignal</strong>
-    · Team GarudaHack
-    · MUSA CodeX 2026
-    · Problem Statement CX1001
-
-    <br><br>
-
-    Small Signals → Pattern → Early Warning → Human Review
-
-</footer>
-
-
-<!-- ================= JAVASCRIPT ================= -->
-
 <script>
-
-    let reporterNumber = 1;
-
-    function submitSignal() {
-
-        const message =
-            document.getElementById("successMessage");
-
-        message.style.display = "block";
-
-        message.innerText =
-            "Signal submitted successfully!";
-
-        window.scrollTo({
-            top: document.getElementById("report").offsetTop - 80,
-            behavior: "smooth"
-        });
-    }
-
-
-    function changeReporter() {
-
-        reporterNumber++;
-
-        if (reporterNumber > 4) {
-            reporterNumber = 1;
-        }
-
-        document.getElementById("reporterText").innerText =
-            "Demo Reporter: Reporter " + reporterNumber;
-
-
-        const message =
-            document.getElementById("successMessage");
-
-        message.style.display = "block";
-
-        message.innerText =
-            "Demo reporter changed to Reporter " +
-            reporterNumber;
-
-
-        window.scrollTo({
-            top: document.getElementById("report").offsetTop - 80,
-            behavior: "smooth"
-        });
-    }
-
+let reporterNumber=1;
+function showMessage(text){
+document.getElementById("message").innerHTML='<div class="success-message">'+text+'</div>';
+window.scrollTo({top:document.getElementById("report").offsetTop-20,behavior:"smooth"});
+}
+function submitSignal(e){
+e.preventDefault();
+showMessage("Signal submitted successfully!");
+}
+function changeReporter(){
+reporterNumber=reporterNumber>=4?1:reporterNumber+1;
+document.getElementById("reporter").innerText="Demo Reporter: Reporter "+reporterNumber;
+showMessage("Demo reporter changed to Reporter "+reporterNumber);
+}
+function useLocation(){
+document.getElementById("location").value="central corridor";
+}
 </script>
-
 </body>
 </html>
